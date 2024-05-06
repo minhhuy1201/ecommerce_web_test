@@ -1,25 +1,30 @@
-const eventHubNamespace = "finalTest";
-const sasKey =
-  "Endpoint=sb://finaltest.servicebus.windows.net/;SharedAccessKeyName=sendInfo;SharedAccessKey=2+sDXGwcc6r0q35ekiKVLc2qwq7LpmWCM+AEhEbU1FY=";
-const eventHubName = "eh-demo";
-const url = `https://${eventHubNamespace}.servicebus.windows.net/${eventHubName}/messages?api-version=2014-01`;
+import axios from "axios";
+
+const eventHubNamespace = import.meta.env.VITE_EVENT_HUB_NAMESPACE;
+const sasKey = import.meta.env.VITE_SAS_KEY;
+const eventHubName = import.meta.env.VITE_EVENT_HUB_NAME;
+const url = import.meta.env.VITE_SEND_URL;
 
 async function sendEvent(data) {
   console.log(data);
-  fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `SharedAccessSignature ${sasKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      console.log("Event sent successfully:", response);
-    })
-    .catch((error) => {
-      console.error("Error sending event:", error);
-    });
+  try {
+    const response = await axios.post(
+      `https://${eventHubNamespace}.servicebus.windows.net/${eventHubName}/messages`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${sasKey}`,
+          // Add any other required headers here
+        },
+      }
+    );
+    console.log(`Event sent: Message = ${data}`);
+    // Handle success
+  } catch (error) {
+    console.error("Error sending event:", error);
+    // Handle error
+  }
 }
 
 export default sendEvent;

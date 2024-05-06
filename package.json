@@ -61,6 +61,7 @@
     "@azure/event-hubs": "^5.11.4",
     "@azure/identity": "^4.2.0",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.6.8",
     "buffer": "^6.0.3",
     "firebase": "^8.4.3",
     "formik": "^2.2.6",
